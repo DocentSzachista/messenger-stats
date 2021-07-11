@@ -18,3 +18,4 @@ class FileParser:
     """retrieve a list of dicts containing details about sent messages"""
     def retrieve_messages(self)->list:
         return self.jsonData.get("messages")
+        
