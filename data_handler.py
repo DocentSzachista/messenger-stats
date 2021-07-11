@@ -30,15 +30,19 @@ def count_ammount_of_messages(list_of_dicts, author_to_ignore=None) -> dict:
                 if value is not None:
                     desired_values.update({dict.get("sender_name"): value+1})
     return desired_values
-#policz dlugosci wiadomosci // pomyslmy o sorted 
-#TODO sprawdz czemu wykrywa jako NoneType
-def count_the_longest_message(list_of_dicts, authors, author_to_ignore = None)-> dict:
-    desired_values= {k:0 for k in authors if author_to_ignore is not None and k.find(author_to_ignore)== -1}
+#policz dlugosci wiadomosci 
+def count_the_longest_message(list_of_dicts, authors)-> dict:
+    desired_values= {k:0 for k in authors}
     for dict in list_of_dicts:
         value = dict.get("content")
-        if(value is not None):
-            if author_to_ignore ==None or author_to_ignore not in dict.get("sender_name"):
-                temp_max = desired_values.get(dict.get("sender_name"))
-                if temp_max > len(value):
-                    desired_values.update({dict.get("sender_name"): value})
+        temp_max = desired_values.get(dict.get("sender_name"))
+        if value is not None and temp_max < len(value): 
+                    desired_values.update({dict.get("sender_name"): len(value)})
+    return desired_values
+#policz ile kto wiadomosci cofnal wyslanie wiadomosci
+def count_ammount_of_messages_deleted(list_of_dicts, authors)->dict:
+    desired_values= {k:0 for k in authors}
+    for dict in list_of_dicts:
+        if dict.get("is_unsent") is True:
+            desired_values.update( {dict.get("sender_name") : desired_values.get(dict.get("sender_name"))+1} )
     return desired_values
