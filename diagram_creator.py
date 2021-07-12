@@ -8,16 +8,14 @@ def generate_a_bar_diagram(x_axis=[1, 2, 3], y_axis=[1, 2, 3], title="", descrip
     ax.set_ylabel(ylabel)
     ax.set_title(title)
     plot.show()
-    pass
+    
+    
 def generate_a_pie_diagram(actual_data, titles, title="", description="", xlabel="", ylabel=""):
     """Draw a pie diagram"""
     fix, ax = plot.subplots()
     ax.pie(actual_data, labels=titles,  autopct='%1.1f%%' )
-    # ax.set_xlabel(xlabel)
-    #ax.set_ylabel(ylabel)
     ax.set_title(title)
     plot.show()
-    pass
 
 # for the further development
 # def generate_fig(n, m ):
