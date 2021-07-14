@@ -6,8 +6,15 @@ from numpy import ceil
 # wrzuc dane ile chcesz
 # wydrukuj subplota
 
+# source https://stackoverflow.com/questions/6170246/how-do-i-use-matplotlib-autopct 
+def custom_apct (values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
+    return my_autopct 
 
-def generate_a_bar_diagram(x_axis, y_axis, title="", ax=None, description="", xlabel="", ylabel="")->matplotlib:
+def generate_a_bar_diagram(x_axis, y_axis,  subplot=None, title="", description="", xlabel="", ylabel="")->matplotlib:
     
     """Draw a bar chart diagram
     
@@ -25,7 +32,8 @@ def generate_a_bar_diagram(x_axis, y_axis, title="", ax=None, description="", xl
         name for x_axis label (default is "" )
     
     """
-    if ax is None:
+    """
+    if subplot is None:
         fix, ax = plot.subplots()
         ax.barh(x_axis, y_axis, align='center')
         ax.set_xlabel(xlabel)
@@ -33,14 +41,15 @@ def generate_a_bar_diagram(x_axis, y_axis, title="", ax=None, description="", xl
         ax.set_title(title)
         plot.show()
     else:
-        ax.barh(x_axis, y_axis)
-        ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel)
-        ax.set_title(title)
+    """
+    subplot.bar(x_axis, y_axis)
+    subplot.set_xlabel(xlabel)
+    subplot.set_ylabel(ylabel)
+    subplot.set_title(title)
    
     #return plot.barh(x_axis, y_axis, align='center')
     
-def generate_a_pie_diagram(actual_data, titles, title=""):
+def generate_a_pie_diagram(actual_data, titles, subplot, title=""):
     """Draw a pie diagram
     
     Parameters
@@ -53,6 +62,8 @@ def generate_a_pie_diagram(actual_data, titles, title=""):
         name of diagram (default is "")
     
     """
+    subplot.pie(actual_data, labels=titles, autopct=custom_apct(actual_data))
+    subplot.set_title(title)
     #fix, ax = plot.subplots()
     #ax.pie(actual_data, labels=titles,  autopct='%1.1f%%' )
     #ax.set_title(title)
@@ -72,19 +83,17 @@ def generate_figures( data, conversation_name = "blank", option="bar" ):
             helper parameter to decide which option should be used 
             atm only supported options are "bar" and "pie" (default "bar")
     """
-    fig, axis = plot.subplots()
-    for  data_name, data_values in zip( data, data.values() ):
-        #print(ax, data_name, data_values)
-        print(list(data_values.keys()), list(data_values.values()), data_name, axis)
-        generate_a_bar_diagram(list(data_values.keys()), list(data_values.values()), data_name, axis)
+    ammount_of_diagrams = len(data)
+    col = 1
+    plot.figure(figsize=(ammount_of_diagrams*3, ammount_of_diagrams*3))
+    plot.tight_layout()
+    for  data_name, data_values in data.items():  
+        print(data_name, data_values)
+        subplot = plot.subplot(ammount_of_diagrams, 1, col )
+        col +=1
+        if option is "bar":
+            generate_a_bar_diagram( list(data_values.keys()), list(data_values.values()),  subplot, data_name)
+        if option is "pie":
+            generate_a_pie_diagram(list(data_values.values()), list(data_values.keys()),  subplot, data_name)
     plot.show()
         
-
-
-# for the further development
-# def generate_fig(n, m ):
-#     fig, axis= plot.subplots(n, m)
-#     axis[0][0] = generate_diagram()
-#     plot.show()
-
-# generate_fig(2, 2)

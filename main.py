@@ -15,16 +15,14 @@ if __name__ == "__main__":
     list_of_authors = FileParse.retrieve_authors()
     list_of_message_data = FileParse.retrieve_messages()
     dicts = count_ammount_of_messages(list_of_message_data)
-   # generate_a_bar_diagram(list(dicts.keys()), list(dicts.values()), "Ilosc wiadomosci", ylabel="liczba wiadomosci")
-    #generate_a_pie_diagram(list(dicts.values()), list(dicts.keys()),  title="Ilosc wiadomosci")
     dictionary = give_me_given_char_occurence(list_of_message_data, list_of_authors)
     longest = count_the_longest_message(list_of_message_data, list_of_authors)
     deletions = count_ammount_of_messages_deleted(list_of_message_data, list_of_authors)
 
-    data_for_diagrams = {"liczba wiadomosci" : dicts, 
-                    "Wystapienia wiadomosci" : dictionary,
+    data_for_diagrams = { "liczba wiadomosci" : dicts,
+                    "Wystapienia w wiadomosci xD" : dictionary,
                         "najdlusza wiadomosc": longest,
-                            "Ilosc usuniec"  : deletions }
-    generate_figures(data_for_diagrams, "Piotr")
+                            "Ilosc usuniec wiadomosci"  : deletions }
+    generate_figures(data_for_diagrams, "Piotr", "pie")
 
   
