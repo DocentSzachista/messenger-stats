@@ -15,4 +15,4 @@ def file_finder(directory = os.path.dirname(__file__)) -> list:
     list of paths of JSON files 
     
     """
-    return [ os.path.relpath(os.path.dirname(__file__)+fileName) for fileName in os.listdir(directory) if ".json" in fileName ]
+    return [ directory+"/"+fileName for fileName in os.listdir(directory) if fileName.endswith(".json") ]

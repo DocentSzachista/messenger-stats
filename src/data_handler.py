@@ -7,7 +7,9 @@
 #     return dictionary_of_desired_values
 
 
-
+#TODO make documentation, 
+# change default argument for author_to_ignore for more meaningfull one :)
+# make the argument actually to do sth :)
 #wydobadz z listy slownikow wybrany ciag znakow i zlicz jego ilosc
 def give_me_given_char_occurence(list_of_data, authors, substring="xD", author_to_ignore="sxcqw" )->dict:
     #desired_values={name: [value.get("content") for value in list_of_data if value.get("content") is not None and str(value.get("content")).capitalize().find(substring.capitalize())!=-1 ] for name in authors if name.find(author_to_ignore)==-1 }
@@ -30,6 +32,7 @@ def count_ammount_of_messages(list_of_dicts, author_to_ignore=None) -> dict:
                 if value is not None:
                     desired_values.update({dict.get("sender_name"): value+1})
     return desired_values
+
 #policz dlugosci wiadomosci 
 def count_the_longest_message(list_of_dicts, authors)-> dict:
     desired_values= {k:0 for k in authors}
@@ -39,6 +42,7 @@ def count_the_longest_message(list_of_dicts, authors)-> dict:
         if value is not None and temp_max < len(value): 
                     desired_values.update({dict.get("sender_name"): len(value)})
     return desired_values
+    
 #policz ile kto wiadomosci cofnal wyslanie wiadomosci
 def count_ammount_of_messages_deleted(list_of_dicts, authors)->dict:
     desired_values= {k:0 for k in authors}
