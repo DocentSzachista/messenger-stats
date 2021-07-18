@@ -8,10 +8,9 @@
 
 
 #TODO think of exception that could be thrown and make exception handling  
-# change default argument for author_to_ignore for more meaningfull one :)
-# make the argument actually to do sth :)
+
 #wydobadz z listy slownikow wybrany ciag znakow i zlicz jego ilosc (uzycie str.count() by dostac mniej zaklamane wyniki)
-def give_me_given_char_occurence(list_of_data, authors, substring="xD", author_to_ignore="sxcqw" )->dict:
+def give_me_given_char_occurence(list_of_data, authors, substring="xD", author_to_ignore=None )->dict:
     """ count an ammount of given char occurences in a chat messages
 
     Parameters
@@ -35,11 +34,11 @@ def give_me_given_char_occurence(list_of_data, authors, substring="xD", author_t
     """
 
     #desired_values={name: [value.get("content") for value in list_of_data if value.get("content") is not None and str(value.get("content")).capitalize().find(substring.capitalize())!=-1 ] for name in authors if name.find(author_to_ignore)==-1 }
-    desired_values= {k:0 for k in authors if k.find(author_to_ignore)== -1}
+    desired_values= {k:0 for k in authors if author_to_ignore == None or k.find(author_to_ignore)== -1 }
     for dict in list_of_data:
         value = dict.get("content")
         if value is not None:
-            #if author_to_ignore not in dict.get("sender_name"):
+            if author_to_ignore == None or author_to_ignore not in dict.get("sender_name") :
                 if  substring.lower() in str(value).lower() or   substring in str(value):
                     desired_values.update({dict.get("sender_name"): desired_values.get(dict.get("sender_name"))+1})
     return desired_values
@@ -72,7 +71,7 @@ def count_ammount_of_messages(list_of_data, author_to_ignore=None) -> dict:
     return desired_values
 
 #policz dlugosci wiadomosci 
-def count_the_longest_message(list_of_data, authors)-> dict:
+def count_the_longest_message(list_of_data, authors, author_to_ignore=None)-> dict:
     """ finds the longests message lenght
 
     Parameters
@@ -90,16 +89,17 @@ def count_the_longest_message(list_of_data, authors)-> dict:
     dict holding information about the longest message written by each participant
     
     """
-    desired_values= {k:0 for k in authors}
+    desired_values= {k:0 for k in authors if author_to_ignore == None or k.find(author_to_ignore)== -1 }
     for dict in list_of_data:
-        value = dict.get("content")
-        temp_max = desired_values.get(dict.get("sender_name"))
-        if value is not None and temp_max < len(value): 
-                    desired_values.update({dict.get("sender_name"): len(value)})
+        if author_to_ignore ==None or author_to_ignore != dict.get("sender_name"):
+            value = dict.get("content")
+            temp_max = desired_values.get(dict.get("sender_name"))
+            if value is not None and temp_max < len(value): 
+                        desired_values.update({dict.get("sender_name"): len(value)})
     return desired_values
     
 #policz ile kto wiadomosci cofnal wyslanie wiadomosci
-def count_ammount_of_messages_deleted(list_of_data, authors)->dict:
+def count_ammount_of_messages_deleted(list_of_data, authors, author_to_ignore=None)->dict:
     """ finds the longests message lenght
 
     Parameters
@@ -117,8 +117,9 @@ def count_ammount_of_messages_deleted(list_of_data, authors)->dict:
     dict holding information how many messages were deleted by each participant
     
     """
-    desired_values= {k:0 for k in authors}
+    desired_values= {k:0 for k in authors if author_to_ignore == None or k.find(author_to_ignore)== -1 }
     for dict in list_of_data:
-        if dict.get("is_unsent") is True:
-            desired_values.update( {dict.get("sender_name") : desired_values.get(dict.get("sender_name"))+1} )
+        if author_to_ignore ==None or author_to_ignore != dict.get("sender_name"):
+            if dict.get("is_unsent") is True:
+                desired_values.update( {dict.get("sender_name") : desired_values.get(dict.get("sender_name"))+1} )
     return desired_values
