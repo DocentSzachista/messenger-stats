@@ -48,7 +48,7 @@ def generate_a_bar_diagram(x_axis, y_axis,  subplot=None, title="", description=
     subplot.set_title(title)
    
     
-def generate_a_pie_diagram(actual_data, titles, subplot, title=""):
+def generate_a_pie_diagram(actual_data, titles, subplot, title="")->matplotlib:
     """Draw a pie diagram
     
     Parameters
@@ -64,7 +64,7 @@ def generate_a_pie_diagram(actual_data, titles, subplot, title=""):
     subplot.pie(actual_data, labels=titles, autopct=custom_apct(actual_data))
     subplot.set_title(title)
 
-def generate_figures( data, conversation_name = "blank", option="bar", to_save=True ):
+def generate_figures( data, conversation_name = "blank", option="bar", to_save=True ) -> None:
     """ generate figure holding charts dependent on the needs
 
         Parameters

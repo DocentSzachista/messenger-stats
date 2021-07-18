@@ -7,11 +7,33 @@
 #     return dictionary_of_desired_values
 
 
-#TODO make documentation, 
+#TODO think of exception that could be thrown and make exception handling  
 # change default argument for author_to_ignore for more meaningfull one :)
 # make the argument actually to do sth :)
-#wydobadz z listy slownikow wybrany ciag znakow i zlicz jego ilosc
+#wydobadz z listy slownikow wybrany ciag znakow i zlicz jego ilosc (uzycie str.count() by dostac mniej zaklamane wyniki)
 def give_me_given_char_occurence(list_of_data, authors, substring="xD", author_to_ignore="sxcqw" )->dict:
+    """ count an ammount of given char occurences in a chat messages
+
+    Parameters
+    ----------
+    list_of_data: list
+        list of dictionaries holding the data about conversation
+
+    authors: list
+        list of chats participants
+
+    substring: str, opt
+        given string/char to look in chat (default is "xD")
+
+    author_to_ignore: str, opt 
+        name of the participant to ignore, should be used when we don't care about particular user (default is "sxcqw", will change it later for something more convenient)
+    Returns
+    -------
+
+    dict holding the overall number of appearance of given string for each participant of the chat
+
+    """
+
     #desired_values={name: [value.get("content") for value in list_of_data if value.get("content") is not None and str(value.get("content")).capitalize().find(substring.capitalize())!=-1 ] for name in authors if name.find(author_to_ignore)==-1 }
     desired_values= {k:0 for k in authors if k.find(author_to_ignore)== -1}
     for dict in list_of_data:
@@ -23,9 +45,25 @@ def give_me_given_char_occurence(list_of_data, authors, substring="xD", author_t
     return desired_values
 
 #wydobadz z listy slownikow ilosc wiadomosci do wybranych osob
-def count_ammount_of_messages(list_of_dicts, author_to_ignore=None) -> dict:
+def count_ammount_of_messages(list_of_data, author_to_ignore=None) -> dict:
+    """ count an ammount of written messages by each of the participants
+
+    Parameters
+    ----------
+    list_of_data: list
+        list of dictionaries holding the data about conversation
+    
+    author_to_ignore: str, opt 
+        name of the participant to ignore, should be used when we don't care about particular user (default is "sxcqw", will change it later for something more convenient)
+
+    Returns
+    -------
+
+    dict holding the overall number of appearance of given string for each participant of the chat
+
+    """
     desired_values={}
-    for dict in list_of_dicts:
+    for dict in list_of_data:
         if(dict.get("content") is not None):
             if author_to_ignore ==None or author_to_ignore != dict.get("sender_name"):
                 value = desired_values.setdefault(dict.get("sender_name"),0)
@@ -34,9 +72,26 @@ def count_ammount_of_messages(list_of_dicts, author_to_ignore=None) -> dict:
     return desired_values
 
 #policz dlugosci wiadomosci 
-def count_the_longest_message(list_of_dicts, authors)-> dict:
+def count_the_longest_message(list_of_data, authors)-> dict:
+    """ finds the longests message lenght
+
+    Parameters
+    ----------
+    
+    list_of_data: list
+        list of dictionaries holding the data about conversation
+
+    authors: list
+        list of chats participants
+
+    Returns
+    -------
+
+    dict holding information about the longest message written by each participant
+    
+    """
     desired_values= {k:0 for k in authors}
-    for dict in list_of_dicts:
+    for dict in list_of_data:
         value = dict.get("content")
         temp_max = desired_values.get(dict.get("sender_name"))
         if value is not None and temp_max < len(value): 
@@ -44,9 +99,26 @@ def count_the_longest_message(list_of_dicts, authors)-> dict:
     return desired_values
     
 #policz ile kto wiadomosci cofnal wyslanie wiadomosci
-def count_ammount_of_messages_deleted(list_of_dicts, authors)->dict:
+def count_ammount_of_messages_deleted(list_of_data, authors)->dict:
+    """ finds the longests message lenght
+
+    Parameters
+    ----------
+    
+    list_of_data: list
+        list of dictionaries holding the data about conversation
+
+    authors: list
+        list of chats participants
+
+    Returns
+    -------
+
+    dict holding information how many messages were deleted by each participant
+    
+    """
     desired_values= {k:0 for k in authors}
-    for dict in list_of_dicts:
+    for dict in list_of_data:
         if dict.get("is_unsent") is True:
             desired_values.update( {dict.get("sender_name") : desired_values.get(dict.get("sender_name"))+1} )
     return desired_values

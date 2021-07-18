@@ -6,7 +6,10 @@ from data_handler import *
 from diagram_creator import generate_figures
 
 class DataOrganiser:
-    """Class that handles formatting the data for diagrams"""
+    """Class that handles formatting the data for diagrams
+        
+
+    """
     def __init__(self) -> None:
         self.listOfFiles = file_finder("messenger-statistics/jsons")
     
@@ -26,5 +29,5 @@ class DataOrganiser:
             tempDict.update( {"ilosc napisanych wiadomosci" : count_ammount_of_messages(fileParser.retrieve_messages()) })
             tempDict.update( {"Najdluzsza wiadomosc": count_the_longest_message(fileParser.retrieve_messages(), fileParser.retrieve_authors())})
             tempDict.update( {"Ilosc wycofania wiadomosci do wyslania":  count_ammount_of_messages_deleted(fileParser.retrieve_messages(), fileParser.retrieve_authors())})
-            generate_figures(tempDict, path.basename(pathname), to_save=save)
+            generate_figures(tempDict, path.basename(pathname).replace(".json", ""), to_save=save)
             
